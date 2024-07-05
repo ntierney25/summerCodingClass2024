@@ -1,6 +1,22 @@
+nightBool = false;
+dayBool = true;
+
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(650, windowHeight);
   
+}
+
+function keyPressed(){
+
+  if(key == 'n'){
+    nightBool = true;
+    dayBool = false;
+  }
+
+  if (key == 'd'){
+    nightBool = false;
+    dayBool = true;
+  }
 }
 
 function draw() {
@@ -69,12 +85,27 @@ function draw() {
   
   // Sea
   fill(0,0,255);
-  rect(0,350, 700, 300)
+  rect(0,350, 650, 300)
   
-  //Sun
-  fill(255,255,0);
-  noStroke();
-  circle(mouseX, -mouseX*[Math.cos(mouseX/450)]+200, 100)
+  //Sun/moon
+
+  if(dayBool == true){
+    fill(255,255,0);
+    noStroke();
+    circle(mouseX, -mouseX*[Math.cos(mouseX/450)]+200, 100)
+  }
+  
+  if(nightBool == true){
+    fill(255,255,0);
+    noStroke();
+    circle(mouseX, -mouseX*[Math.cos(mouseX/450)]+200, 100)
+    if (mouseX>(700/2)){
+      fill(0)
+    }else{
+      fill(220);
+    }
+    circle(mouseX-20, -mouseX*[Math.cos(mouseX/450)]+200, 100)
+  }
   
   
   
