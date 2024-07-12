@@ -15,6 +15,7 @@ let player2Y
 //initializing the game state
 let player1win = false;
 let player2win = false;
+let gameStart = false;
 
 // constants
 let player1XInitial
@@ -30,6 +31,13 @@ let p2y = []
 
 // the goal
 let golden
+
+//boom animation
+let boom;
+
+function preload(){
+	boom = loadImage('boomboom.jpg')
+}
 
 
 function setup(){
@@ -54,7 +62,16 @@ function setup(){
 function draw(){
 	background(0);
 
-	if (player1win === false && player2win === false){
+	if(gameStart === false){
+		textSize(20);
+		fill(255);
+		text('RED: W,A,S,D, + R(places traps!)', windowWidth/2-150, windowHeight/2)
+		text('BLUE: Arrow Keys, + P(places traps!)', windowWidth/2-150, windowHeight/2-40);
+		text('Press the SPACE_BAR to begin!', windowWidth/2 -150, windowHeight/2 + 40)
+	}
+
+	if (player1win === false && player2win === false
+		&& gameStart === true){
 		game();
 	} 
 	else if(player1win === true){
@@ -74,17 +91,17 @@ function game(){
 
 //initializing the players
 	fill(255,0,0)
-	player1 = rect(player1X, player1Y, windowWidth/20, windowHeight/20);
+	player1 = rect(player1X, player1Y, windowHeight/20, windowHeight/20);
 	fill(0,0,255)
-	player2 = rect(player2X, player2Y, windowWidth/20, windowHeight/20);
+	player2 = rect(player2X, player2Y, windowHeight/20, windowHeight/20);
 
 //setting up the game winning condition
 	fill(255,0,255);
 	golden = ellipse(windowWidth/2, windowHeight/2, 20,20)
-	if (dist(player1X, player1Y, windowWidth/2, windowHeight/2) < 20){
+	if (dist(player1X, player1Y, windowWidth/2, windowHeight/2) < 30){
 		player1win = true;
 	}
-	if (dist(player2X, player2Y, windowWidth/2, windowHeight/2) < 20){
+	if (dist(player2X, player2Y, windowWidth/2, windowHeight/2) < 30){
 		player2win = true;
 	}
 
@@ -95,10 +112,16 @@ function game(){
 		ellipse(p1x[i], p1y[i], 40, 40);
 		if(dist(player2X, player2Y, p1x[i], p1y[i]) < 50){
 			
+
+			image(boom, player2X, player2Y, 50, 50);
 			p1x.splice(i, 1)
 		 	p1y.splice(i, 1)
+
+
 		 	player2X = player2XInitial;
 		 	player2Y = player2YInitial;
+
+
 		}
 	}
 	for(let i = 0; i < p2x.length; i++){
@@ -107,6 +130,9 @@ function game(){
 		ellipse(p2x[i], p2y[i], 40, 40)
 		if(dist(player1X, player1Y, p2x[i], p2y[i]) < 50){
 			
+
+			image(boom, player1X, player1Y, 50,50);
+
 			p2x.splice(i, 1)
 		 	p2y.splice(i, 1)
 
@@ -181,6 +207,10 @@ function keyPressed(){
 	}
 	if(key === 'r'){		
 		traps(1);
+	}
+
+	if(keyCode === 32){ //32 is the keycode for the space bar
+		gameStart = true;
 	}
 }
 
